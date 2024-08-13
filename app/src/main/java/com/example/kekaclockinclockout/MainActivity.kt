@@ -21,7 +21,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var messageAdapter: MessageAdapter
     private val messages: MutableList<TextMessage> = mutableListOf()
-    private var id : Int? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -32,7 +31,7 @@ class MainActivity : AppCompatActivity() {
         val selectImageButton: Button = findViewById(R.id.selectImageButton)
         messageInput = findViewById(R.id.messageInput)
         recyclerView = findViewById(R.id.messageRecyclerView)
-        val uniqueId : EditText = findViewById(R.id.uniqueId)
+        val uniqueId = findViewById<EditText>(R.id.uniqueId)
 
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
 
@@ -51,9 +50,8 @@ class MainActivity : AppCompatActivity() {
             // selectImageLauncher.launch("image/*")
         }
 
-
-        id?.let { uniqueId.setText(it) }
         connectButton.setOnClickListener {
+            val id = uniqueId.text.toString()
             viewModel.connectWebSocket("wss://be40-2401-4900-1c17-3c48-60a5-ef31-6398-4e3f.ngrok-free.app/ws/test/$id")
         }
 
