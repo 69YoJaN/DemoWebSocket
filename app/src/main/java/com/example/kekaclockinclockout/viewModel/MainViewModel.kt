@@ -3,6 +3,7 @@ package com.example.kekaclockinclockout.viewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.kekaclockinclockout.model.TextMessage
 import com.example.kekaclockinclockout.webSocketManager.WebSocketManager
 import okhttp3.WebSocket
 import okhttp3.WebSocketListener
@@ -25,7 +26,6 @@ class MainViewModel : ViewModel() {
             override fun onMessage(webSocket: WebSocket, text: String) {
                 super.onMessage(webSocket, text)
                 println("Raw received message: $text")
-
                 try {
                     val jsonObject = JSONObject(text)
                     val type = jsonObject.optString("type", null.toString())
@@ -34,7 +34,8 @@ class MainViewModel : ViewModel() {
                     if (type == "send_message" && dataArray != null && dataArray.length() > 0) {
                         val rawMessage = dataArray.getString(0)
                         val cleanedMessage = rawMessage.trim().removeSurrounding("\"").trimEnd('}')
-                        _messageDisplay.postValue("Received: $cleanedMessage")
+                        val receivedMessage = TextMessage(cleanedMessage, isSent = false)
+                        _messageDisplay.postValue(receivedMessage.text_data)
                     } else {
                         _messageDisplay.postValue("Error: Unexpected message format or type")
                     }
@@ -42,6 +43,7 @@ class MainViewModel : ViewModel() {
                     _messageDisplay.postValue("Error parsing message: ${e.message}")
                 }
             }
+
 
             override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
                 super.onFailure(webSocket, t, response)

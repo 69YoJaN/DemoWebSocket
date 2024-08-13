@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">KekaClockInClockOut</string>
+    <string name="app_name">WebSocketApplication</string>
     <string name="disconnect">Disconnect!</string>
     <string name="enter_message">Enter message</string>
     <string name="send">Send</string>
@@ -7,4 +7,5 @@
     <string name="connect">Connect!</string>
     <string name="select_image">Select Image</string>
     <string name="sender_message_will_appear_here">Sender message will appear here ....</string>
+    <string name="keyHint">12345678</string>
 </resources>

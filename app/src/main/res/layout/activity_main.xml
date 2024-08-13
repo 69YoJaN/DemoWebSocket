@@ -12,6 +12,15 @@
         android:layout_height="wrap_content"
         android:text="@string/connect"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/uniqueId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:hint="@string/keyHint"
+        app:layout_constraintEnd_toStartOf="@+id/connectButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -23,16 +32,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/connectButton" />
-
-    <TextView
-        android:id="@+id/messageDisplay"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="312dp"
-        android:hint="@string/messages_will_appear_here"
-        app:layout_constraintBottom_toTopOf="@+id/cardView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/disconnectButton" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"

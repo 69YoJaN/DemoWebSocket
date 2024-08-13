@@ -20,7 +20,7 @@ class WebSocketManager {
 
     fun sendMessage(textData: String) {
         if (::webSocket.isInitialized) {
-            val message = TextMessage(textData)
+            val message = TextMessage(textData,true)
             val jsonMessage = gson.toJson(message)
             webSocket.send(jsonMessage)
         }

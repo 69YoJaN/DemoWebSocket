@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var messageAdapter: MessageAdapter
     private val messages: MutableList<TextMessage> = mutableListOf()
-
+    private var id : Int? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
         val selectImageButton: Button = findViewById(R.id.selectImageButton)
         messageInput = findViewById(R.id.messageInput)
         recyclerView = findViewById(R.id.messageRecyclerView)
-        val messageDisplay : TextView = findViewById(R.id.messageDisplay)
+        val uniqueId : EditText = findViewById(R.id.uniqueId)
 
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
 
@@ -41,8 +41,7 @@ class MainActivity : AppCompatActivity() {
         recyclerView.adapter = messageAdapter
 
         viewModel.messageDisplay.observe(this) { message ->
-            messageDisplay.text = message
-            val receivedMessage = TextMessage(message)
+            val receivedMessage = TextMessage(message, isSent = false)
             messages.add(receivedMessage)
             messageAdapter.notifyItemInserted(messages.size - 1)
             recyclerView.scrollToPosition(messages.size - 1)
@@ -52,8 +51,10 @@ class MainActivity : AppCompatActivity() {
             // selectImageLauncher.launch("image/*")
         }
 
+
+        id?.let { uniqueId.setText(it) }
         connectButton.setOnClickListener {
-            viewModel.connectWebSocket("wss://be40-2401-4900-1c17-3c48-60a5-ef31-6398-4e3f.ngrok-free.app/ws/test/")
+            viewModel.connectWebSocket("wss://be40-2401-4900-1c17-3c48-60a5-ef31-6398-4e3f.ngrok-free.app/ws/test/$id")
         }
 
         disconnectButton.setOnClickListener {
@@ -63,8 +64,8 @@ class MainActivity : AppCompatActivity() {
         sendButton.setOnClickListener {
             val messageText = messageInput.text.toString()
             if (messageText.isNotBlank()) {
-                val textMessage = TextMessage(messageText)
-                messages.add(textMessage) // Add message to the list
+                val textMessage = TextMessage(messageText, isSent = true)
+                messages.add(textMessage)
                 messageAdapter.notifyItemInserted(messages.size - 1)
                 recyclerView.scrollToPosition(messages.size - 1)
                 viewModel.sendMessage(messageText)
